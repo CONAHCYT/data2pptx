@@ -1,0 +1,7 @@
+.env
+.git
+.idea
+__pycache__
+.sw*
+data/
+RHD-PruebaGraficas.ipynb
