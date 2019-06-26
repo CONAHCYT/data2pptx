@@ -6,6 +6,7 @@ from pptx.util import Pt
 import uuid
 import tempfile
 
+
 def _iter_cells(table):
     for row in table.rows:
         for cell in row.cells:
@@ -25,22 +26,61 @@ def _animate(axes, width=300, height=200):
 
 
 class pptx_image:
-    def __init__(self,filename):
+    """
+        A wrapper for an image filename. It is to be used when wanting so insert an image from a file
+    """
+    def __init__(self, filename):
         self.filename = filename
 
 
 class Slideshow:
-    def __init__(self,  template,
+    """
+        Class for creating PPTX slideshows. It must be initialized with the path to template.
+        Aferwards, the Execute method compiles a pptx presentaiton, and the SaveTo method writes it to a file.
+    """
+    def __init__(self, template_path,
                  string2colormap={},
                  dpi=200):
+        """
+        Object that wraps the creation of slideshows and exposes functions that are useful for datascience outputs.
+
+        :param template_path: The path to the PPTX template
+        :param string2colormap: a dictionary whose keys are strings, and whose values are pptx.dml.color.RGBColor objects.
+        When writing a table, cells whose value matches a key in this dictionary, will have font size equal to its value.
+        :param dpi: Resolution to write images in
+        """
         self.dpi = dpi
-        self.slideshow = Presentation(template)
+        self.slideshow = Presentation(template_path)
         self.string2colormap = string2colormap
 
     def SaveTo(self, path):
+        """
+        Saves to file
+        :param path: Path were to save the resulting PPTX slideshow.
+        """
         self.slideshow.save(path)
 
     def Execute(self, slides):
+        """
+        Compiles a set of slides.
+
+        :param slides: a list of dictionaries, each of which describes the content of a slide. One example would be
+        ```          {
+            "name": "Slide3",
+            "layout": "LayoutName",
+            'placeholders': {
+                "Image Place Holder": matplotlib_figure_object
+            } ```
+            Where ```layout``` is the name of a Slide Layout, and each key in Placeholders is an object placeholder.
+            These are defined in the PPTX template with which the object was initialized.
+            The values of the ```placeholders``` disctionaries are objects of a set of supported classes.
+            Currently, the following are supported:
+                matplotlib.Figure : will be rendered as an image
+                datascience2pptx.pptx_image : will be rendered as an image
+                string : to be rendered as text
+                pandas.dataframe : to be rendered as a table
+                bytes : will be rendered as an image. Useful for animated gifs.
+        """
         slds = self.slideshow
         for sl in slides:
             layout = self.FindLayout(sl['layout'])
@@ -50,8 +90,8 @@ class Slideshow:
                 raise Exception('Slide layout: {} does not exist in this template.' +
                                 ' the available layouts are: {}'.format(sl['layout'],
                                                                         ' -, - '.join(
-                                                                                      [i.name for i in
-                                                                                       slds.slide_layouts])))
+                                                                            [i.name for i in
+                                                                             slds.slide_layouts])))
 
             if 'title' in sl:
                 title_shape = slide.shapes.title
@@ -74,17 +114,32 @@ class Slideshow:
                         raise Exception('Placeholder {}, is unknown in this slide-type. ' +
                                         'Available placeholders are: {}'.format(k,
                                                                                 ', '.join(
-                                                                                          [
-                                                                                           i.name for i in
-                                                                                           slide.placeholders])))
+                                                                                    [
+                                                                                        i.name for i in
+                                                                                        slide.placeholders])))
 
     def FindPlaceholder(self, slide, name):
+        """
+
+        :param slide:
+        :param name:
+        :return:
+        """
         return next((i for i in slide.placeholders if i.name == name), None)
 
     def FindLayout(self, name):
+        """
+
+        :param name:
+        :return:
+        """
         return next((i for i in self.slideshow.slide_layouts if i.name == name), None)
 
     def GetLayouts(self):
+        """
+
+        :return:
+        """
         return [sl for sl in self.slideshow.slide_layouts]
 
     def _put_str(self, placeholder, text):
@@ -111,9 +166,9 @@ class Slideshow:
         rowId = 0
         colId = 0
 
-        #if Indices don't have names, we replace them by blanks
+        # if Indices don't have names, we replace them by blanks
         empty_indices = [i for i, x in enumerate(dataframe.index.names) if x is None]
-        if len(empty_indices)>0:
+        if len(empty_indices) > 0:
             allindices = list(dataframe.index.names)
             for ii in empty_indices:
                 allindices[ii] = " "

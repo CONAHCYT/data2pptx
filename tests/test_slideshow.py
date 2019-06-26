@@ -85,11 +85,10 @@ class TestSlideshow(TestCase):
             }
         }
 
-
     def setUp(self, templatepath="tests/TemplateExample.pptx",
               string2colormap={'▼': RGBColor(0, 255, 0),
                                '▲': RGBColor(255, 0, 0)}):
-        self.sldsh = Slideshow(template=templatepath,
+        self.sldsh = Slideshow(template_path=templatepath,
                                string2colormap=string2colormap)
         # for sl in self.sldsh.GetLayouts():
         #     print(sl.name)
@@ -97,9 +96,8 @@ class TestSlideshow(TestCase):
         #     for ph in slide.placeholders:
         #         print("\t", ph.name)
 
-        self.sldsh = Slideshow(template=templatepath,
+        self.sldsh = Slideshow(template_path=templatepath,
                                string2colormap=string2colormap)
-
 
         # We initialize all the different objects to add
         self.the_string = "This a test string"
@@ -131,15 +129,12 @@ class TestSlideshow(TestCase):
         assert len(self.sldsh.slideshow.slides) == 1
 
     def test__put_figure(self):
-
-
         slides = [self.slide_figure]
         self.sldsh.Execute(slides)
         print("put figure")
         assert len(self.sldsh.slideshow.slides) == 1
 
     def test__put_dataframe(self):
-
         slides = [self.slide_dataframe]
         self.sldsh.Execute(slides)
         print("put dataframe")
@@ -154,15 +149,13 @@ class TestSlideshow(TestCase):
         print("put figure")
         assert len(self.sldsh.slideshow.slides) == 1
 
-    def test_SaveTo(self,path="/tmp/temp.pptx"):
+    def test_SaveTo(self, path="/tmp/temp.pptx"):
         slides = [self.slide_text,
                   self.slide_figure,
                   self.slide_image,
                   self.slide_dataframe]
         self.sldsh.Execute(slides)
         self.sldsh.SaveTo(path)
-
-
 
     def tearDown(self):
         assert True
