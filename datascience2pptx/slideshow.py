@@ -1,10 +1,12 @@
-from pptx import Presentation
+import logging
+import tempfile
 
 import numpy as np
+
+from pptx import Presentation
 from pptx.util import Pt
 
-import uuid
-import tempfile
+
 
 
 def _iter_cells(table):
@@ -146,7 +148,10 @@ class Slideshow:
         placeholder.text = text
 
     def _put_figure(self, placeholder, fig):
-        print(placeholder.width, placeholder.height, (placeholder.width / placeholder.height))
+        logging.debug(" ".join([str(x) for x in ["figure size (figure):",
+                                                 placeholder.width,
+                                                 placeholder.height,
+                                                 (placeholder.width / placeholder.height)]]))
         fp = tempfile.TemporaryFile()
         fig.savefig(fp, dpi=self.dpi, format="png")
         fp.seek(0)
@@ -202,7 +207,10 @@ class Slideshow:
                     run.font.size = Pt(12)
 
     def _put_bytes(self, placeholder, the_bytes):
-        print(placeholder.width, placeholder.height, (placeholder.width / placeholder.height))
+        logging.debug(" ".join([str(x) for x in ["figure size (bytes):",
+                                                 placeholder.width,
+                                                 placeholder.height,
+                                                 (placeholder.width / placeholder.height)]]))
         # path = "/tmp/" + str(uuid.uuid4()) + ".gif"
         # with open(path, "wb") as fout:
         #     fout.write(the_bytes)
