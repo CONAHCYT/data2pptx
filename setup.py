@@ -9,7 +9,7 @@ if os.path.isfile(requirementPath):
 
 print(install_requires)
 
-setup(name='datascience2pptx',
+setup(name='data2pptx',
       version='0.0.1',
       description='Allows programatic building of pptx slideshows, using pandas and matplotib objects.',
       author='Coordinación de Ciencia de Datos, MX',
