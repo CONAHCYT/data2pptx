@@ -7,8 +7,6 @@ from pptx import Presentation
 from pptx.util import Pt
 
 
-
-
 def _iter_cells(table):
     for row in table.rows:
         for cell in row.cells:
@@ -78,7 +76,7 @@ class Slideshow:
             The values of the ```placeholders``` disctionaries are objects of a set of supported classes.
             Currently, the following are supported:
                 matplotlib.Figure : will be rendered as an image
-                datascience2pptx.pptx_image : will be rendered as an image
+                data2pptx.pptx_image : will be rendered as an image
                 string : to be rendered as text
                 pandas.dataframe : to be rendered as a table
                 bytes : will be rendered as an image. Useful for animated gifs.

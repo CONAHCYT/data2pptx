@@ -1,6 +1,6 @@
 from unittest import TestCase
-from datascience2pptx.slideshow import Slideshow
-from datascience2pptx.slideshow import pptx_image
+from data2pptx.slideshow import Slideshow
+from data2pptx.slideshow import pptx_image
 from pptx.dml.color import RGBColor
 from matplotlib import pylab as P
 import math
