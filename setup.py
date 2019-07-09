@@ -9,8 +9,8 @@ if os.path.isfile(requirementPath):
 
 otherchars = ["-", "'"]
 install_requires = [x for x in install_requires if len(x)>0 ]
-reqs = [x for x in install_requires if x[0] not in otherchars and x[0] != "#"]
-deps = [x for x in install_requires if x[0] in otherchars and x[0] != "#"]
+reqs = [x for x in install_requires if (x[0] not in otherchars) and (x[0] != "#")]
+deps = [x for x in install_requires if (x[0] in otherchars) and (x[0] != "#")]
 print(reqs, "\n\n---\n\n", deps)
 
 setup(name='data2pptx',
