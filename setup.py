@@ -7,6 +7,8 @@ if os.path.isfile(requirementPath):
     with open(requirementPath) as f:
         install_requires = f.read().splitlines()
 
+reqs = [x for x in install_requires if not x.startswith("-e")]
+deps = [x for x in install_requires if x.startswith("-e")]
 print(install_requires)
 
 setup(name='data2pptx',
@@ -16,5 +18,6 @@ setup(name='data2pptx',
       author_email='victor.mireles@conacyt.mx',
       packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
       license='LICENSE.txt',
-      install_requires=install_requires
+      install_requires=install_requires,
+      dependency_links=deps
     )
