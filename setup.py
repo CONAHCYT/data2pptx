@@ -7,11 +7,11 @@ if os.path.isfile(requirementPath):
     with open(requirementPath) as f:
         install_requires = f.read().splitlines()
 
-otherchars = ["-"]
+otherchars = ["-","'"]
 install_requires = [x for x in install_requires if len(x)>0 ]
 reqs = [x for x in install_requires if x[0] not in otherchars and x[0] != "#"]
 deps = [x for x in install_requires if x[0] in otherchars and x[0] != "#"]
-print(install_requires)
+print(reqs,"\n\n\n",deps)
 
 setup(name='data2pptx',
       version='0.0.1',
