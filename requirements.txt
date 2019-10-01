@@ -1,6 +1,5 @@
 python_pptx
 pandas
-matplotlib
 imageio
-
+matplotlib
 
